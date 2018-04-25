@@ -125,7 +125,7 @@ function Input(props) {
           autoComplete="off" />
 
         <ValidationStatus
-          display={ valid || invalid }
+          display='flex'
           valid={ valid }
           invalid={ invalid }>
           { valid && (

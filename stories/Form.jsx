@@ -31,7 +31,7 @@ export default class Example extends React.Component {
           value="cheese"
           checked />
 
-        <Field.Group name="foo">
+        {/* <Field.Group name="foo">
           <Input
             name="firstName"
             label="First name"
@@ -44,7 +44,7 @@ export default class Example extends React.Component {
             required={({ fields }) => {
               return !!fields.foo.firstName.value;
             }} />
-          </Field.Group>
+          </Field.Group> */}
       </Form>
     );
   }

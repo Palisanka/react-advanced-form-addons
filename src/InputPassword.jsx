@@ -1,6 +1,5 @@
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createField, fieldPresets } from 'react-advanced-form';
 import Label from './Label';
 import { Icon, colors } from './const';
@@ -12,17 +11,6 @@ class InputPassword extends React.Component {
     this.state = {
       isPasswordVisible: false
     };
-  }
-  static propTypes = {
-    /* General */
-    id: PropTypes.string,
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-    hint: PropTypes.oneOfType([PropTypes.element, PropTypes.string]),
-
-    /* Inherites */
-    fieldProps: PropTypes.object.isRequired,
-    fieldState: PropTypes.object.isRequired
   }
 
   render() {

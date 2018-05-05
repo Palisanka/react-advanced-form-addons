@@ -1,21 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { createField, fieldPresets } from 'react-advanced-form';
 import Label from './Label';
 import { Icon, colors } from './const';
 import { InputContainer, InputWrapper, StyledInput, ValidationStatus, Message } from './StyledComponents';
 
 class Input extends React.Component {
-  static propTypes = {
-    /* General */
-    name: PropTypes.string.isRequired,
-    label: PropTypes.string,
-
-    /* Inherites */
-    fieldProps: PropTypes.object.isRequired,
-    fieldState: PropTypes.object.isRequired
-  }
-
   render() {
     const { innerRef, name, label, disabled, fieldProps, fieldState } = this.props;
     const { validating, validatedAsync, valid, invalid, errors } = fieldState;

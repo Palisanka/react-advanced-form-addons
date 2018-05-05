@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Field } from 'react-advanced-form';
+import { Form } from 'react-advanced-form';
 import { Input, Select, Radio } from '../src';
+import InputPassword from '../src/InputPassword';
 
 export default class Example extends React.Component {
   render() {
@@ -14,6 +15,12 @@ export default class Example extends React.Component {
           name="fieldTwo"
           label="Field two"
           initialValue="Initial value"
+          required />
+
+        <InputPassword
+          name="password"
+          label="Password"
+          type="password"
           required />
 
         <Select name="select" label="Gender">

@@ -1,159 +1,74 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { createField, fieldPresets } from 'react-advanced-form';
-import styled from 'styled-components';
 import Label from './Label';
-import { Icon, colors, font, animations } from './const';
+import { Icon, colors } from './const';
+import { InputContainer, InputWrapper, StyledInput, ValidationStatus, Message } from './StyledComponents';
 
-const InputContainer = styled.div`
-margin: 1.5rem 0;
-`;
+class Input extends React.Component {
+  static propTypes = {
+    /* General */
+    name: PropTypes.string.isRequired,
+    label: PropTypes.string,
 
-const InputWrapper = styled.div`
-position: relative;
-display: inline-flex;
-flex-wrap: wrap;
-
-&:after {
-  position: absolute;
-  left: 0;
-  bottom: 0;
-  max-width: 100%;
-  content: '';
-  height: 0;
-  display: block;
-  background-color: ${colors.grayLight};
-}
-
-${({ validating }) => validating && `
-  &:after {
-    height: 2px;
-    animation: ${animations.loadStripe} 8s ease forwards;
-    background-color: ${colors.primary};
+    /* Inherites */
+    fieldProps: PropTypes.object.isRequired,
+    fieldState: PropTypes.object.isRequired
   }
-`}
-`;
 
-const StyledInput = styled.input`
-padding: .5rem .75rem;
-padding-right: 48px;
+  render() {
+    const { innerRef, name, label, disabled, fieldProps, fieldState } = this.props;
+    const { validating, validatedAsync, valid, invalid, errors } = fieldState;
+    return (
+      <InputContainer>
+        { label && (
+          <Label
+            htmlFor={ name }
+            valid={ valid }
+            invalid={ invalid }>
+            { label }
+          </Label>
+        ) }
 
-border: 1px solid #e1e2e6;
-border-radius: 2px;
-color: ${colors.black};
-${font.default};
-transition-property: border box-shadow;
-transition-duration: .2s;
+        <InputWrapper validating={ validating } validatedAsync={ validatedAsync }>
+          <StyledInput
+            { ...fieldProps }
+            innerRef={ innerRef }
+            fieldState={ fieldState }
+            disabled={ validating || disabled }
+            autoComplete="off" />
 
-&:focus {
-  outline: none;
-  border-color: ${colors.primary};
-  box-shadow: 0 0 3px rgba(0, 175, 232, .35);
-}
+          <ValidationStatus
+            display='flex'
+            valid={ valid }
+            invalid={ invalid }>
+            { valid && (
+              <Icon
+                animated
+                name="check"
+                height={ 14 }
+                width={ 14 }
+                stroke={ colors.success } />
+            ) }
 
-&:disabled {
-  color: ${colors.gray};
-}
+            { invalid && (
+              <Icon
+                animated
+                name="x"
+                height={ 14 }
+                width={ 14 }
+                stroke={ colors.danger } />
+            ) }
+          </ValidationStatus>
 
-${({ fieldState: { valid } }) => valid && `
-  border-color: ${colors.success};
-`}
+        </InputWrapper>
 
-${({ fieldState: { invalid } }) => invalid && `
-  border-color: ${colors.danger};
-`}
-`;
-
-const ValidationStatus = styled.div`
-display: ${({ display }) => display ? 'flex' : 'none'};
-position: absolute;
-right: 0;
-top: 0;
-bottom: 0;
-align-items: center;
-justify-content: center;
-width: 35px;
-
-&:before {
-  position: absolute;
-  content: '';
-  height: 23px;
-  width: 1px;
-  background-color: ${({ valid, invalid }) => (
-    (valid && 'rgba(0, 191, 97, .25)') ||
-    (invalid && 'rgba(255, 0, 0, .25)')
-  )};
-  left: 0;
-  top: 0;
-  bottom: 0;
-  margin: auto 0;
-  transform-origin: center;
-  animation: ${animations.slideDown} .2s ease;
-}
-`;
-
-const Message = styled.p`
-margin: .25rem 0 0;
-color: ${colors.danger};
-${font.default};
-font-size: .8rem;
-transition: color .2s;
-
-animation: ${animations.slideDown} .2s;
-`;
-
-function Input(props) {
-  const { innerRef, name, label, disabled, fieldProps, fieldState } = props;
-  const { validating, validatedAsync, valid, invalid, errors } = fieldState;
-
-  return (
-    <InputContainer>
-      { label && (
-        <Label
-          htmlFor={ name }
-          valid={ valid }
-          invalid={ invalid }>
-          { label }
-        </Label>
-      ) }
-
-      <InputWrapper validating={ validating } validatedAsync={ validatedAsync }>
-        <StyledInput
-          { ...fieldProps }
-          innerRef={ innerRef }
-          fieldState={ fieldState }
-          disabled={ validating || disabled }
-          autoComplete="off" />
-
-        <ValidationStatus
-          display='flex'
-          valid={ valid }
-          invalid={ invalid }>
-          { valid && (
-            <Icon
-              animated
-              name="check"
-              height={ 14 }
-              width={ 14 }
-              stroke={ colors.success } />
-          ) }
-
-          { invalid && (
-            <Icon
-              animated
-              name="x"
-              height={ 14 }
-              width={ 14 }
-              stroke={ colors.danger } />
-          ) }
-        </ValidationStatus>
-
-      </InputWrapper>
-
-      { invalid && errors && errors.map((error, i) => (
-        <Message key={ i }>{ error }</Message>
-      )) }
-    </InputContainer>
-  );
+        { invalid && errors && errors.map((error, i) => (
+          <Message key={ i }>{ error }</Message>
+        )) }
+      </InputContainer>
+    );
+  }
 }
 
 export default createField(fieldPresets.input)(Input);
